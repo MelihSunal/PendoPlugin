@@ -1,0 +1,32 @@
+use ::Pendo/Pendo.bbj::Pendo
+use ::Pendo/Main.bbj::Main
+
+if INFO(3,6)<>"6" then
+    call "WebKit/util/deploy.bbj",pgm(-1)
+FI
+
+rem text! = window!.addButton(101, 25,125, 150,25)
+rem p! = new Pendo(window!, "api", "fhfhfopsd@gmail.com", "Melih")
+
+use ::Pendo/Pendo.bbj::Pendo
+
+class public Demo
+
+   method public void main()
+       sysGui! = BBjAPI().openSysGui("X0")
+       declare auto BBjTopLevelWindow topwindow!
+       topwindow! = sysGui!.addWindow(sysGui!.getAvailableContext(),50,50,300,350, "Back Button Sample", $00000800$)
+       window! = topwindow!.addChildWindow(topwindow!.getAvailableControlID(),0,0,0,0,"",$00000800$,BBjAPI().getSysGui().getAvailableContext())
+       apiKey$ = STBL("PENDOAPIKEY")
+       rem user_email$ = "melih.sunal"
+       p! = new Pendo(window!, apiKey$, user_email$)
+       p!.setEmail(email$)
+       process_events
+   methodend
+
+classend
+
+
+
+pendo1! = new Demo()
+pendo1!.main()

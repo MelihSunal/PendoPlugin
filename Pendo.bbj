@@ -1,0 +1,60 @@
+use java.nio.file.Files
+use java.nio.file.Path
+
+class public Pendo
+    rem BBjString name$
+    rem BBjString api$
+    rem '"+ api$ +"',
+    rem '"+ name$ +"'
+    field protected BBjChildWindow Canvas!
+    field protected BBjHtmlView HTMLView!
+    field protected BBjString apiKey$
+    field protected BBjString user_email$
+    rem /**
+    rem  * Construct new BBjRouter for the given BBjTopLevelWindow instance
+    rem  *
+    rem * @param BBjTopLevelWindow wnd!
+    rem * @param BBjNumber hash! When true , then hash based routing will be used
+    rem * @param BBjNumber id!
+    rem */
+    method public Pendo(BBjWindow wnd!, BBjString apiKey$, BBjString user_email$)
+        #Canvas! = wnd!.addChildWindow(wnd!.getAvailableControlID(),0,0,0,0,"",$00000800$,BBjAPI().getSysGui().getAvailableContext())
+        rem setup a hidden HTMLView to handle events
+        #HTMLView! = #Canvas!.addHtmlView(101,0,0,0,0,"",$0000$)
+        #HTMLView!.setOpaque(0)
+        #HTMLView!.setNoEdge(1)
+        #HTMLView!.setTabTraversable(0)
+        #HTMLView!.setFocusable(0)
+        rem #HTMLView!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onEvent")
+        rem inject the required javascript to boot the router
+        rem s! = "console.log('bla')"
+        rem #email$ = user_email$
+        pendo! = #readFile("Pendo/pendo.js")
+        myInitPendo! = pendo! + "pendoInit('"+ apiKey$ +"' + '"+ user_email$ +"')"
+        #HTMLView!.executeScript(myInitPendo!)
+    methodend
+    rem /**
+    rem  * Read the content of the given file as a String.
+    rem  *
+    rem  * @param file! The file's path
+    rem  *
+    rem  * @return The file's content
+    rem  */
+    method protected BBjString readFile(BBjString file$)
+        content$ = ""
+        ch=unt
+        open (ch)file$
+        read record (ch,siz=5512000)content$
+        close (ch)
+        methodret content$
+    methodend
+    
+    method public BBjString getEmail()
+        methodret user_email$
+    methodend
+    
+    method public void setEmail(BBjString email$)
+        user_email$ = email$
+    methodend
+
+classend

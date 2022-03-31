@@ -26,7 +26,5 @@ class public Demo
 
 classend
 
-
-
 pendo1! = new Demo()
 pendo1!.main()

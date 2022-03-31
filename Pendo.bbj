@@ -1,12 +1,8 @@
 class public Pendo
-    rem BBjString name$
-    rem BBjString api$
-    rem '"+ api$ +"',
-    rem '"+ name$ +"'
-    field protected BBjChildWindow Canvas!
-    field protected BBjHtmlView HTMLView!
-    rem field protected BBjString apiKey$
-    rem field protected BBjString user_email$
+    rem  BBjString name$
+    rem  BBjString api$
+    field private BBjHtmlView htmlView!
+
     rem /**
     rem  * Construct new BBjRouter for the given BBjTopLevelWindow instance
     rem  *
@@ -14,18 +10,34 @@ class public Pendo
     rem * @param BBjNumber hash! When true , then hash based routing will be used
     rem * @param BBjNumber id!
     rem */
+
+    method public Pendo()
+        declare BBjSysGui sysgui!
+        declare BBjWindow wnd!
+        sysgui! = BBjAPI().getSysGui()
+        wnd! = sysgui!.addWindow(sysgui!.getAvailableContext(),0,0,0,0,"",$00000800$)
+        #init(wnd!)
+    methodend
+
     method public Pendo(BBjWindow wnd!)
-        #Canvas! = wnd!.addChildWindow(wnd!.getAvailableControlID(),0,0,0,0,"",$00000800$,BBjAPI().getSysGui().getAvailableContext())
-        #HTMLView! = #Canvas!.addHtmlView(101,0,0,0,0,"",$0000$)
-        #HTMLView!.setOpaque(0)
-        #HTMLView!.setNoEdge(1)
-        #HTMLView!.setTabTraversable(0)
-        #HTMLView!.setFocusable(0)
-        pendo! = #readFile("Pendo/pendo.js")
+        #init(wnd!)
+    methodend
+
+
+    method private void init(BBjWindow wnd!)
+        #htmlView! = wnd!.addHtmlView(wnd!.getAvailableControlID(),0,0,0,0,"",$0000$)
+        #htmlView!.setVisible(0)
+        #htmlView!.setOpaque(0)
+        #htmlView!.setNoEdge(1)
+        #htmlView!.setTabTraversable(0)
+        #htmlView!.setFocusable(0)
+        rem escape
+        pendo! = #readFile("PendoPlugin/pendo.js")
         apiKey$ = STBL("PENDOAPIKEY")
         myInitPendo! = pendo! + "pendoInit('"+ apiKey$ +"')"
-        #HTMLView!.executeScript(myInitPendo!)
+        #htmlView!.executeScript(myInitPendo!)
     methodend
+
     rem /**
     rem  * Read the content of the given file as a String.
     rem  *
@@ -41,14 +53,14 @@ class public Pendo
         close (ch)
         methodret content$
     methodend
+    TODO fix me
+    rem method public BBjString getEmail()
+    rem     methodret user_email$
+    rem methodend
     
-    method public BBjString getEmail()
-        methodret user_email$
-    methodend
-    
-    method public void setEmail(BBjString email$)
-        user_email$ = email$
-    methodend
+    rem method public void setEmail(BBjString email$)
+    rem     user_email$ = email$
+    rem methodend
 
 classend
     rem  * Read the content of the given file as a String.

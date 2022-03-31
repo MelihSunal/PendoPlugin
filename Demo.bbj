@@ -8,8 +8,6 @@ FI
 rem text! = window!.addButton(101, 25,125, 150,25)
 rem p! = new Pendo(window!, "api", "fhfhfopsd@gmail.com", "Melih")
 
-use ::Pendo/Pendo.bbj::Pendo
-
 class public Demo
 
    method public void main()

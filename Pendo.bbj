@@ -63,27 +63,3 @@ class public Pendo
     rem methodend
 
 classend
-    rem  * Read the content of the given file as a String.
-    rem  *
-    rem  * @param file! The file's path
-    rem  *
-    rem  * @return The file's content
-    rem  */
-    method protected BBjString readFile(BBjString file$)
-        content$ = ""
-        ch=unt
-        open (ch)file$
-        read record (ch,siz=5512000)content$
-        close (ch)
-        methodret content$
-    methodend
-    
-    method public BBjString getEmail()
-        methodret user_email$
-    methodend
-    
-    method public void setEmail(BBjString email$)
-        user_email$ = email$
-    methodend
-
-classend
